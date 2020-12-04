@@ -1,7 +1,7 @@
 #assemble boot.s file
 as --32 boot/boot.s -o build/boot.o
-as --32 kernel/CPU/gdt.s -o build/gdt.o
-as --32 kernel/CPU/interrupt.s -o build/interrupt.o
+nasm -felf kernel/CPU/gdt.s -o build/gdt.o
+nasm -felf kernel/CPU/interrupt.s -o build/interrupt.o
 
 #compile kernel.c file
 gcc -m32 -c kernel/kernel.c -o build/kernel.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
@@ -10,6 +10,9 @@ gcc -m32 -c kernel/utils/common.c -o build/common.o -std=gnu99 -ffreestanding -O
 gcc -m32 -c kernel/drivers/screen/screen.c -o build/screen.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
 gcc -m32 -c kernel/CPU/descriptor_tables.c -o build/descriptor_tables.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
 gcc -m32 -c kernel/CPU/isr.c -o build/isr.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
+gcc -m32 -c kernel/CPU/timer.c -o build/timer.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
+gcc -m32 -c kernel/CPU/kheap.c -o build/kheap.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
+gcc -m32 -c kernel/CPU/paging.c -o build/paging.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
 #gcc -m32 -c kernel/drivers/keyboard/keyboard.c -o build/keyboard.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
 #gcc -m32 -c kernel/drivers/ports/ports.c -o build/ports.o -std=gnu99 -ffreestanding -O1 -Wall -Wextra
 
@@ -26,4 +29,4 @@ cp boot/grub.cfg isodir/boot/grub/grub.cfg
 grub-mkrescue -o ShinOS.iso isodir
 
 #run it in qemu
-qemu-system-x86_64 -cdrom ShinOS.iso
+qemu-system-x86_64 -d guest_errors,int -cdrom ShinOS.iso
