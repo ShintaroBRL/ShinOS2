@@ -23,3 +23,6 @@ grub-mkrescue -o MyOS.iso isodir
 
 //run it in qemu
 qemu-system-x86_64 -cdrom MyOS.iso
+
+# Falhas
+* Sistema crashando ao habilitar paginação de memoria e armazenamento
